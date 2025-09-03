@@ -1,0 +1,61 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+.notebooks_cache/
+*.nbconvert.ipynb
+
+# --- Data ---
+data/raw/
+data/interim/
+data/processed/
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.json
+*.parquet
+
+# --- Models ---
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.pth
+
+# --- Logs & Outputs ---
+logs/
+*.log
+*.out
+*.err
+
+# --- Environments ---
+.venv/
+venv/
+env/
+*.env
+*.conda
+*.yml
+
+# --- IDEs ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Checkpoints & cache ---
+*.bak
+*.swp
+*.swo
+*.tmp
+*.cache/
+__pycache__/
