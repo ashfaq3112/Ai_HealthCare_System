@@ -32,6 +32,14 @@ def run_kmeans(df: pd.DataFrame, n_clusters: int = 3) -> tuple[pd.DataFrame, flo
     df_kmeans = df.copy()
     df_kmeans["cluster"] = labels
 
+    # Map numeric clusters -> risk names (adjust if you analyze differently)
+    cluster_name_map = {
+        0: "High Risk",
+        1: "Moderate Risk",
+        2: "Low Risk"
+    }
+    df_kmeans["cluster_name"] = df_kmeans["cluster"].map(cluster_name_map)
+
     score = silhouette_score(scaled, labels)
     return df_kmeans, score
 
@@ -48,7 +56,6 @@ def run_dbscan(df: pd.DataFrame, eps: float = 1.5, min_samples: int = 50) -> tup
     df_dbscan = df.copy()
     df_dbscan["cluster"] = labels
 
-    # silhouette score only valid if >1 cluster
     score = None
     if len(set(labels)) > 1 and -1 not in set(labels):  # skip if all noise
         score = silhouette_score(scaled, labels)
@@ -56,7 +63,7 @@ def run_dbscan(df: pd.DataFrame, eps: float = 1.5, min_samples: int = 50) -> tup
 
 
 def profile_clusters(df: pd.DataFrame, method: str, score: float | None) -> str:
-    """Generate a markdown cluster profile summary."""
+    """Generate a markdown cluster profile summary with human-readable names if available."""
     summary = [f"# Cluster Profiles - {method}\n"]
     if score:
         summary.append(f"- Silhouette Score: **{score:.4f}**\n")
@@ -64,10 +71,18 @@ def profile_clusters(df: pd.DataFrame, method: str, score: float | None) -> str:
         summary.append("- Silhouette Score: N/A (only one cluster or noise)\n")
 
     summary.append("## Cluster Sizes\n")
-    summary.append(df["cluster"].value_counts().sort_index().to_markdown())
+    if "cluster_name" in df.columns:
+        cluster_sizes = df["cluster_name"].value_counts().to_frame().reset_index()
+        cluster_sizes.columns = ["cluster_name", "count"]
+        summary.append(cluster_sizes.to_markdown(index=False))
+    else:
+        summary.append(df["cluster"].value_counts().sort_index().to_markdown())
 
     summary.append("\n## Mean Feature Values by Cluster\n")
-    profile = df.groupby("cluster").mean(numeric_only=True)
+    if "cluster_name" in df.columns:
+        profile = df.groupby("cluster_name").mean(numeric_only=True)
+    else:
+        profile = df.groupby("cluster").mean(numeric_only=True)
     summary.append(profile.to_markdown())
 
     return "\n".join(summary)
@@ -85,7 +100,7 @@ if __name__ == "__main__":
     # --- Run KMeans ---
     clustered_kmeans, kmeans_score = run_kmeans(df, n_clusters=3)
     print(f"[KMeans] Silhouette Score: {kmeans_score:.4f}")
-    print(clustered_kmeans["cluster"].value_counts())
+    print(clustered_kmeans["cluster_name"].value_counts())
 
     # --- Run DBSCAN ---
     clustered_dbscan, dbscan_score = run_dbscan(df, eps=1.5, min_samples=50)
