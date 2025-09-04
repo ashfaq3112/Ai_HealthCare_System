@@ -147,6 +147,14 @@ Cluster 2 → Low-Risk Younger Group
 symptom:hypertension, symptom:obese → treatment:antihypertensive, treatment:lifestyle_change
 (Lift: 18.51, Confidence: 1.00)
 ```
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home Page](assets/Homepage.png)
+
+### 🧑‍⚕️ Single Patient Prediction
+![Single Patient Prediction](assets/Predictions.png)
+
 ## 🛠️ Tech Stack
 
 **Programming Language**
@@ -168,4 +176,5 @@ symptom:hypertension, symptom:obese → treatment:antihypertensive, treatment:li
 - **Integrate Real Clinical Datasets**: Incorporate real-world patient datasets with treatment + outcome mappings to improve the reliability of predictions.  
 - **Temporal Association Rules**: Enhance the association rule mining by including **temporal patient history** (sequence of symptoms → treatments → outcomes).  
 - **Improved Interpretability**: Add interactive **LIME/SHAP dashboards** within the app for doctors and researchers to better understand model decisions.  
+
 
