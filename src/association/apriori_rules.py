@@ -90,7 +90,6 @@ def mine_rules(df: pd.DataFrame, min_support: float = 0.05, min_conf: float = 0.
     rules = rules.sort_values(by=["lift", "confidence"], ascending=False).head(10).reset_index(drop=True)
     return rules
 
-
 # -------------------------------
 # Main
 # -------------------------------
@@ -104,9 +103,12 @@ if __name__ == "__main__":
     trans_df = simulate_transactions(df)
     trans_df.to_csv(OUTPUT_PATH_csv, index=False)
 
-
     print("[INFO] Mining rules...")
     rules = mine_rules(trans_df, min_support=0.05, min_conf=0.6)
+
+    # Convert frozensets to clean strings
+    rules["antecedents"] = rules["antecedents"].apply(lambda x: ", ".join(sorted(list(x))))
+    rules["consequents"] = rules["consequents"].apply(lambda x: ", ".join(sorted(list(x))))
 
     print("\n[TOP 10 RULES]")
     print(rules[["antecedents", "consequents", "support", "confidence", "lift", "method"]])

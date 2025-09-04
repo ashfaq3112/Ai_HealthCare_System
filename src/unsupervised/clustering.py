@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
+import joblib
 
 # -------------------------------
 # Config
@@ -14,6 +15,7 @@ from sklearn.metrics import silhouette_score
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DATA_PATH = os.path.join(PROJECT_ROOT, "data", "processed", "stroke_data_processed.csv")
 OUTPUT_PATH = os.path.join(PROJECT_ROOT, "cluster_profiles.md")
+MODEL_PATH = os.path.join(PROJECT_ROOT,"models","cluster_model.pkl")
 
 TARGET = "stroke"
 
@@ -39,6 +41,16 @@ def run_kmeans(df: pd.DataFrame, n_clusters: int = 3) -> tuple[pd.DataFrame, flo
         2: "Low Risk"
     }
     df_kmeans["cluster_name"] = df_kmeans["cluster"].map(cluster_name_map)
+    # Save the model + scaler + feature order
+    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    joblib.dump({"model": kmeans, "scaler": scaler, "features": list(features.columns)}, MODEL_PATH)
+
+    # Save the scaler
+    joblib.dump(scaler, 'C:\\Users\\moham\\OneDrive\\Desktop\\ML_Learnings\\ai-healthcare-system\\models\\scaler.pkl')
+
+    # Save the kmeans model
+    joblib.dump(kmeans, 'C:\\Users\\moham\\OneDrive\\Desktop\\ML_Learnings\\ai-healthcare-system\\models\\kmeans.pkl')
+    print(f"[SAVE] KMeans model and scaler saved at {MODEL_PATH}")
 
     score = silhouette_score(scaled, labels)
     return df_kmeans, score
