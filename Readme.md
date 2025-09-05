@@ -10,23 +10,23 @@ An end-to-end ML/AI project that predicts **stroke risk**, clusters patients int
   - Handles missing values and categorical encoding  
   - Saves processed data  
 
-- **Supervised Learning (Milestone 2)**  
+- **Supervised Learning **  
   - Logistic Regression, Random Forest, XGBoost baselines  
   - 5-fold Cross Validation  
   - Evaluation with ROC AUC, Precision, Recall, F1  
   - SHAP-based feature importance  
 
-- **Unsupervised Learning (Milestone 3)**  
+- **Unsupervised Learning **  
   - KMeans & DBSCAN clustering  
   - Cluster profiles with mean feature summaries  
   - Risk-based cluster naming (High/Moderate/Low Risk groups)  
 
-- **Association Rules (Milestone 4)**  
+- **Association Rules**  
   - Simulated patient symptoms → treatments transactions  
   - Apriori + FP-Growth mining  
   - Top-10 rules exported for recommendations  
 
-- **Streamlit App (Milestone 5)**  
+- **Streamlit App **  
   - Single patient risk prediction  
   - Cluster assignment with profile interpretation  
   - Recommended treatments from association rules  
@@ -176,5 +176,6 @@ symptom:hypertension, symptom:obese → treatment:antihypertensive, treatment:li
 - **Integrate Real Clinical Datasets**: Incorporate real-world patient datasets with treatment + outcome mappings to improve the reliability of predictions.  
 - **Temporal Association Rules**: Enhance the association rule mining by including **temporal patient history** (sequence of symptoms → treatments → outcomes).  
 - **Improved Interpretability**: Add interactive **LIME/SHAP dashboards** within the app for doctors and researchers to better understand model decisions.  
+
 
 
